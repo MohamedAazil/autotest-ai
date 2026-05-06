@@ -1,0 +1,33 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environments
+.venv/
+env/
+venv/
+ENV/
+
+# FastAPI / Uvicorn
+.env
+.flaskenv
+
+# Testing & Coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Type Checking
+.mypy_cache/
+
+# IDEs & Editors
+.vscode/
+.idea/
+*.swp
+.DS_Store
+
+# Distribution / Packaging
+dist/
+build/
+*.egg-info/
