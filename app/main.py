@@ -13,7 +13,11 @@ async def webhook(context = Depends(resolve_installation_context)):
     try:
         print("Webhook received")
 
-        token = context["token"]
+        token = context["token"].get("token", None)
+        
+        if token is None:
+            raise ValueError("Token not found") 
+            
 
         payload = context["payload"]
 
