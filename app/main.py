@@ -1,6 +1,7 @@
 from fastapi import FastAPI, Request, Depends
 from .auth import resolve_installation_context
 from .services.github_service import GithubService
+from .services.repository_scanner import RepositoryScannerService
 app = FastAPI()
 
 @app.get("/")
@@ -19,12 +20,17 @@ async def webhook(context = Depends(resolve_installation_context)):
         repo_full_name = payload["repository"]["full_name"]
 
         github = GithubService(token=token)
+        
+        scanner = RepositoryScannerService(github_service=github)
+        
+        scanner.scan(repo_full_name=repo_full_name)
 
         repo_contents = github.get_repo_contents(
             repo_full_name=repo_full_name
         )
 
-        print(repo_contents)
+        print("repo_contents", repo_contents)
+        print("paths", scanner.paths)
 
         return {
             "status": 200,
