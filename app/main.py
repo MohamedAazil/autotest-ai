@@ -2,6 +2,7 @@ from fastapi import FastAPI, Request, Depends
 from .auth import resolve_installation_context
 from .services.github_service import GithubService
 from .services.repository_scanner import RepositoryScannerService
+from .services.test_discovery import TestDiscoveryService
 app = FastAPI()
 
 @app.get("/")
@@ -32,9 +33,13 @@ async def webhook(context = Depends(resolve_installation_context)):
         repo_contents = github.get_repo_contents(
             repo_full_name=repo_full_name
         )
+        
+        test_discovery_service = TestDiscoveryService(paths=scanner.paths)
+        test_files = test_discovery_service.discover_tests()
 
         print("repo_contents", repo_contents)
         print("paths", scanner.paths)
+        print(test_files if test_files else "No test files found")
 
         return {
             "status": 200,
